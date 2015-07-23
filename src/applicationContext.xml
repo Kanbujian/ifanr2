@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd"
+	xmlns:tx="http://www.springframework.org/schema/tx">
+
+	
+    	<!-- spring注解扫描的包 -->
+	<context:component-scan base-package="com.kanbujian" />
+
+	
+	<bean id="user" class="com.kanbujian.model.User"></bean>
+
+	<bean id="author" class="com.kanbujian.model.Author"></bean>
+
+	<bean id="tag" class="com.kanbujian.model.Tag"></bean>
+
+	<bean id="news" class="com.kanbujian.model.News"></bean>
+
+	<bean id="comment" class="com.kanbujian.model.Comment"></bean>
+	
+	<!-- 数据源配置 数据库连接信息 -->
+	<bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/ifanr" />
+		<property name="username" value="root" />
+		<property name="password" value="w969003" />
+	</bean>
+	
+	<!-- sessionFactory配置 -->
+	<bean id="mySessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="myDataSource" />
+		<property name="annotatedClasses">
+			<list>
+				<value>com.kanbujian.model.User</value>
+				<value>com.kanbujian.model.News</value>
+				<value>com.kanbujian.model.Tag</value>
+				<value>com.kanbujian.model.Author</value>
+				<value>com.kanbujian.model.Comment</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<value>
+				hibernate.dialect=org.hibernate.dialect.MySQLDialect
+				hibernate.hbm2ddl.auto=update
+				<!-- update : 最常用的属性，也根据model类生成表,即使表结构改变了,表中的行仍然存在,不会删除以前的行 -->
+				hibernate.format_sql=true
+				hibernate.show_sql=true
+				hibernate.current_session_context_class=thread
+			</value>
+		</property>
+	</bean>
+	
+	<!-- User服务类和数据库处理类 -->
+	<bean id="userDao" class="com.kanbujian.DAO.UserDAO">
+		<property name="sessionFactory" ref="mySessionFactory"></property>
+	</bean>
+
+	<bean id="userService" class="com.kanbujian.service.UserService">
+		<property name="userDao" ref="userDao"></property>
+	</bean>
+	
+	
+	<!--News 服务类和数据库处理类-->
+	<bean id="newsDao" class="com.kanbujian.DAO.NewsDAO">
+	    <property name="sessionFactory" ref="mySessionFactory"></property>
+	</bean>
+	<bean id="newsService" class="com.kanbujian.service.NewsService">
+	    <property name="newsDao" ref="newsDao"></property>
+	</bean>
+	
+
+	
+
+
+
+</beans>

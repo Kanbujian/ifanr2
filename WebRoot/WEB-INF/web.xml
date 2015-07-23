@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+  <display-name>ifanr2</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  
+  <!-- 引入spring -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:applicationContext.xml</param-value>
+	</context-param>
+	
+	
+	<servlet>
+		<servlet-name>checkLogin</servlet-name>
+		<servlet-class>com.kanbujian.servlet.checkLogin</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>checkLogin</servlet-name>
+		<url-pattern>/servlet/checkLogin</url-pattern>
+	</servlet-mapping>
+  
+   <!-- 字符编码处理的过滤器 -->
+   <filter>
+        <filter-name>CharacterFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>CharacterFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+  
+  
+  <!-- spring mvc 拦截器配置 -->
+  <servlet>
+	<servlet-name>dispatcher</servlet-name>
+	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+	<load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+	<servlet-name>dispatcher</servlet-name>
+	<!-- <url-pattern>*.do</url-pattern>  扩展映射    以前缀”*.”开头的是用来做扩展映射的-->
+	<!-- <url-pattern>/</url-pattern> 路径映射  以”/’开头和以”/*”结尾的是用来做路径映射的-->
+	<!-- /   拦截所有的请求，包括静态文件 css js jpg等等 -->
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+   
+  
+</web-app>

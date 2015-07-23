@@ -1,0 +1,5 @@
+spring 
+hibernate required
+dbcp pool commons-loggin collection
+mysql驱动
+jstl 标签库
